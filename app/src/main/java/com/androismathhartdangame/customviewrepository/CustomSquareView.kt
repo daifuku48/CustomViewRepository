@@ -1,8 +1,11 @@
 package com.androismathhartdangame.customviewrepository
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.ColorInt
@@ -15,11 +18,14 @@ class CustomSquareView @JvmOverloads constructor(
 ): View(context, attrs, defStyleAttr){
 
     @Px
-    var strokeWidth: Float = DEFAULT_STROKE_WIDTH
+    private var strokeWidth: Float = DEFAULT_STROKE_WIDTH
     @ColorInt
-    var strokeColor: Int = DEFAULT_STROKE_COLOR
+    private var strokeColor: Int = DEFAULT_STROKE_COLOR
     @Px
-    var cornerRadius: Float = DEFAULT_CORNER_RADIUS
+    private var cornerRadius: Float = DEFAULT_CORNER_RADIUS
+    private var rect = Rect()
+    private val maskPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private lateinit var resultBitmap: Bitmap
 
     init {
         if (attrs != null){
@@ -40,16 +46,29 @@ class CustomSquareView @JvmOverloads constructor(
         }
     }
 
+    override fun onSizeChanged(width: Int, height: Int, oldwidth: Int, oldheight: Int) {
+        super.onSizeChanged(width, height, oldwidth, oldheight)
+        if (width == 0)
+            return
+        rect = Rect(0, 0, width, height)
+
+        prepareBitmap(width, height)
+    }
+
+    private fun prepareBitmap(width: Int, height: Int) {
+        resultBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+    }
+
     companion object {
         const val DEFAULT_CORNER_RADIUS = 0f
         const val DEFAULT_STROKE_WIDTH: Float = 1f
         const val DEFAULT_STROKE_COLOR = Color.BLACK
     }
 
-
-
     override fun onDraw(canvas: Canvas?) {
-        super.onDraw(canvas)
+
+
+        canvas.drawBitmap()
 
     }
 }
