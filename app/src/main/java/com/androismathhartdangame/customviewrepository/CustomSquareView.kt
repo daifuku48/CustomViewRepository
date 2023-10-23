@@ -53,8 +53,8 @@ class CustomSquareView @JvmOverloads constructor(
         val height = MeasureSpec.getSize(heightMeasureSpec).toFloat()
         val stroke = strokeWidth / 2
         rect.set(
-            0f + stroke,
-            0f + stroke,
+            stroke,
+            stroke,
             width - stroke,
             height - stroke
         )
