@@ -11,8 +11,8 @@
     <com.androismathhartdangame.customviewrepository.CustomSquareView
         android:layout_width="300dp"
         android:layout_height="300dp"
-        app:stroke_width="4dp"
-        app:corner_radius="10dp"
+        app:stroke_width="5dp"
+        app:corner_radius="20dp"
         app:stroke_color="@color/blue" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

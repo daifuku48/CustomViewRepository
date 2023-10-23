@@ -49,17 +49,16 @@ class CustomSquareView @JvmOverloads constructor(
         }
     }
 
-    override fun onSizeChanged(width: Int, height: Int, oldwidth: Int, oldheight: Int) {
-        super.onSizeChanged(width, height, oldwidth, oldheight)
-        if (width == 0)
-            return
-        val halfStrokeWidth = strokeWidth / 2
-        val rectWithoutAdjusted = RectF(0f, 0f, width.toFloat(), height.toFloat())
-        rect = RectF(
-            rectWithoutAdjusted.left + halfStrokeWidth,
-            rectWithoutAdjusted.top + halfStrokeWidth,
-            rectWithoutAdjusted.right - halfStrokeWidth,
-            rectWithoutAdjusted.bottom - halfStrokeWidth
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+        val width = MeasureSpec.getSize(widthMeasureSpec).toFloat()
+        val height = MeasureSpec.getSize(heightMeasureSpec).toFloat()
+        val stroke = strokeWidth / 2
+        rect.set(
+            0f + stroke,
+            0f + stroke,
+            width - stroke,
+            height - stroke
         )
     }
 
