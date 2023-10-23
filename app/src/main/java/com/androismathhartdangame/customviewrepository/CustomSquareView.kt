@@ -1,47 +1,50 @@
 package com.androismathhartdangame.customviewrepository
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.graphics.Rect
+import android.graphics.RectF
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
-import androidx.annotation.ColorInt
-import androidx.annotation.Px
 
 class CustomSquareView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-): View(context, attrs, defStyleAttr){
-
-    @Px
+) : View(context, attrs, defStyleAttr) {
     private var strokeWidth: Float = DEFAULT_STROKE_WIDTH
-    @ColorInt
     private var strokeColor: Int = DEFAULT_STROKE_COLOR
-    @Px
     private var cornerRadius: Float = DEFAULT_CORNER_RADIUS
-    private var rect = Rect()
-    private val maskPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-    private lateinit var resultBitmap: Bitmap
+    private var rect = RectF()
+    private var strokePaint = Paint(Paint.ANTI_ALIAS_FLAG)
+
+    companion object {
+        const val DEFAULT_CORNER_RADIUS = 0f
+        const val DEFAULT_STROKE_WIDTH = 2f
+        const val DEFAULT_STROKE_COLOR = Color.BLACK
+    }
 
     init {
-        if (attrs != null){
+        if (attrs != null) {
             val typedArray = context.obtainStyledAttributes(attrs, R.styleable.CustomSquareView)
             strokeColor = typedArray.getColor(
-                R.styleable.CustomSquareView_strokeColor,
+                R.styleable.CustomSquareView_stroke_color,
                 DEFAULT_STROKE_COLOR
             )
-            strokeWidth = typedArray.getFloat(
-                R.styleable.CustomSquareView_strokeWidth,
+            Log.d("color", strokeColor.toString())
+            strokeWidth = typedArray.getDimension(
+                R.styleable.CustomSquareView_stroke_width,
                 DEFAULT_STROKE_WIDTH
             )
-            cornerRadius = typedArray.getFloat(
-                R.styleable.CustomSquareView_cornerRadius,
+            cornerRadius = typedArray.getDimension(
+                R.styleable.CustomSquareView_corner_radius,
                 DEFAULT_CORNER_RADIUS
             )
+            strokePaint.color = strokeColor
+            strokePaint.style = Paint.Style.STROKE
+            strokePaint.strokeWidth = strokeWidth
             typedArray.recycle()
         }
     }
@@ -50,25 +53,18 @@ class CustomSquareView @JvmOverloads constructor(
         super.onSizeChanged(width, height, oldwidth, oldheight)
         if (width == 0)
             return
-        rect = Rect(0, 0, width, height)
-
-        prepareBitmap(width, height)
+        val halfStrokeWidth = strokeWidth / 2
+        val rectWithoutAdjusted = RectF(0f, 0f, width.toFloat(), height.toFloat())
+        rect = RectF(
+            rectWithoutAdjusted.left + halfStrokeWidth,
+            rectWithoutAdjusted.top + halfStrokeWidth,
+            rectWithoutAdjusted.right - halfStrokeWidth,
+            rectWithoutAdjusted.bottom - halfStrokeWidth
+        )
     }
 
-    private fun prepareBitmap(width: Int, height: Int) {
-        resultBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-    }
-
-    companion object {
-        const val DEFAULT_CORNER_RADIUS = 0f
-        const val DEFAULT_STROKE_WIDTH: Float = 1f
-        const val DEFAULT_STROKE_COLOR = Color.BLACK
-    }
-
-    override fun onDraw(canvas: Canvas?) {
-
-
-        canvas.drawBitmap()
-
+    override fun onDraw(canvas: Canvas) {
+        super.onDraw(canvas)
+        canvas.drawRoundRect(rect, cornerRadius, cornerRadius, strokePaint)
     }
 }
