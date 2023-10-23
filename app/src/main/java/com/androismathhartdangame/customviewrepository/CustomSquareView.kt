@@ -6,7 +6,6 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 
 class CustomSquareView @JvmOverloads constructor(
@@ -33,7 +32,6 @@ class CustomSquareView @JvmOverloads constructor(
                 R.styleable.CustomSquareView_stroke_color,
                 DEFAULT_STROKE_COLOR
             )
-            Log.d("color", strokeColor.toString())
             strokeWidth = typedArray.getDimension(
                 R.styleable.CustomSquareView_stroke_width,
                 DEFAULT_STROKE_WIDTH
