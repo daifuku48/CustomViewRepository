@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">CustomViewRepository</string>
+    <string name="item">Item %d</string>
 </resources>
